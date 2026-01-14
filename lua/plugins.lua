@@ -120,7 +120,8 @@ return {
         end,
     },
     {
-        "sohanemon/flash.yazi",
+        -- "sohanemon/flash.yazi",
+        "Dooez/flash.yazi",
         enabled = vim.g.have_yazi,
         lazy = true,
         build = function(plugin)
@@ -319,7 +320,7 @@ return {
                 delete_mode = 'D',
             }
         },
-        config = function(plugin, opts)
+        config = function(_, opts)
             require('arrow').setup(opts)
             local open = function(file_index)
                 local fileName = vim.g.arrow_filenames[file_index]
