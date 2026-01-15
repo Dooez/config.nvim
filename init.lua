@@ -1,7 +1,8 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = ' '
 vim.keymap.set({ 'n', 'v' }, '<Space>', '<Nop>', { silent = true })
-
+local utils_path = vim.fn.stdpath("data") .. "/utils"
+vim.env.PATH = utils_path .. ":" .. vim.env.PATH
 local check_env = function(var)
   return vim.env[var] ~= nil and vim.env[var] ~= 0
 end

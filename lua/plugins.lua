@@ -267,12 +267,33 @@ return {
         },
     },
     {
-        "amitds1997/remote-nvim.nvim",
+        "Dooez/remote-nvim.nvim",
         version = "*",                       -- Pin to GitHub releases
         dependencies = {
             "nvim-lua/plenary.nvim",         -- For standard functions
             "MunifTanjim/nui.nvim",          -- To build the plugin UI
             "nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
+        },
+        opts = {
+            progress_view = {
+                type = "split",
+            },
+            offline_mode = {
+                enabled = true,
+                no_github = false,
+            },
+            remote = {
+                app_name = 'nvim_remote',
+                copy_dirs = {
+                    data = {
+                        dirs = {
+                            'lazy',
+                            'mason',
+                            'utils',
+                        },
+                    },
+                },
+            },
         },
         config = true,
     },

@@ -36,7 +36,9 @@ return {
             --  If you want to override the default filetypes that your language server will attach to you can
             --  define the property 'filetypes' to the map in question.
             servers = {
-                clangd = {},
+                clangd = {
+                    cmd = { 'clangd', '--background-index', '--query-driver=**', '--clang-tidy' },
+                },
                 -- gopls = {},
                 basedpyright = {},
                 rust_analyzer = {},
@@ -175,23 +177,11 @@ return {
                     --nmap('<leader>rn', vim.lsp.buf.rename, '[R]e[n]ame')
                     map('<leader>ca', vim.lsp.buf.code_action, '[C]ode [A]ction')
 
-                    -- map('gd', '<cmd>Trouble lsp_definitions<cr>', '[G]oto [D]efinition')
-                    -- map('gD', vim.lsp.buf.declaration, '[G]oto [D]eclaration')
 
-                    -- map('gr', '<cmd>Trouble lsp_references<cr>', '[G]oto [R]eferences')
-                    -- map('gI', '<cmd>Trouble lsp_implementations<cr>', '[G]oto [I]mplementation')
-
-                    -- nmap('<leader>D', require('telescope.builtin').lsp_type_definitions, 'Type [D]efinition')
-                    -- map('<leader>ss', require('telescope.builtin').lsp_document_symbols, '[S]earch [S]ymbols')
-                    -- map('<leader>sw', require('telescope.builtin').lsp_dynamic_workspace_symbols,
-                    --     '[S]earch [W]orkspace Symbols')
-
-                    -- See `:help K` for why this keymap
                     map('K', vim.lsp.buf.hover, 'Hover Documentation')
                     map('<C-k>', vim.lsp.buf.signature_help, 'Signature Documentation')
 
 
-                    -- language specific
                     local filetype = vim.api.nvim_get_option_value('filetype', { buf = bufnr })
                     if filetype == 'cpp' or filetype == 'c' then
                         map('<M-o>', '<CMD>ClangdSwitchSourceHeader<CR>', 'Switch to header/source.')
@@ -228,10 +218,6 @@ return {
                         })
                     end
 
-                    -- The following code creates a keymap to toggle inlay hints in your
-                    -- code, if the language server you are using supports them
-                    --
-                    -- This may be unwanted, since they displace some of your code
                     if client and client_supports_method(client, vim.lsp.protocol.Methods.textDocument_inlayHint, event.buf) then
                         map('<leader>th', function()
                             vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled { bufnr = event.buf })
@@ -239,17 +225,11 @@ return {
                     end
                 end,
             })
-            require('mason-lspconfig').setup {
-                hanlders = {
-                    function(server_name)
-                        require('lspconfig')[server_name].setup {
-                            capabilities = capabilities,
-                            settings = servers[server_name],
-                            filetypes = (servers[server_name] or {}).filetypes,
-                        }
-                    end,
-                },
-            }
+            for name, server in pairs(servers) do
+                server.capabilities = vim.tbl_deep_extend('force', {}, capabilities, server.capabilities or {})
+                vim.lsp.config(name, server)
+                vim.lsp.enable(name)
+            end
 
             -- [[ Configure nvim-cmp ]]
             -- See `:help cmp`
