@@ -285,11 +285,21 @@ return {
             remote = {
                 app_name = 'nvim_remote',
                 copy_dirs = {
+                    config = {
+                        compression = {
+                            enabled = "true",
+                            additional_opts = { "--exclude-vcs" },
+                        },
+                    },
                     data = {
                         dirs = {
                             'lazy',
                             'mason',
                             'utils',
+                        },
+                        compression = {
+                            enabled = "true",
+                            additional_opts = { "--exclude-vcs" },
                         },
                     },
                 },
