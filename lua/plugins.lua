@@ -285,6 +285,13 @@ return {
             remote = {
                 app_name = 'nvim_remote',
                 copy_dirs = {
+                    dot_config = {
+                        dirs = { "yazi" },
+                        compression = {
+                            enabled = "true",
+                            additional_opts = { "--exclude-vcs", "--dereference" },
+                        },
+                    },
                     config = {
                         compression = {
                             enabled = "true",
