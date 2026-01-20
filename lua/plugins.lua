@@ -275,9 +275,6 @@ return {
             "nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
         },
         opts = {
-            progress_view = {
-                type = "split",
-            },
             offline_mode = {
                 enabled = true,
                 no_github = false,
@@ -311,6 +308,9 @@ return {
                     },
                 },
             },
+            log = {
+                level = "debug",
+            }
         },
         config = true,
     },
@@ -382,6 +382,17 @@ return {
             vim.keymap.set('n', '<F14>', function() open(4) end, { desc = 'Open arrow entry 4.' })
             vim.keymap.set('n', '<F15>', function() open(5) end, { desc = 'Open arrow entry 5.' })
         end,
+    },
+    {
+        "folke/lazydev.nvim",
+        ft = "lua", -- only load on lua files
+        opts = {
+            library = {
+                -- See the configuration section for more details
+                -- Load luvit types when the `vim.uv` word is found
+                { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+            },
+        },
     },
 
 }
