@@ -275,6 +275,12 @@ return {
             "nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
         },
         opts = {
+            client_callback = function(port, _)
+                local args = { "nvim", "--remote-ui", "--server", "localhost:" .. port, }
+                local uv = vim.uv or vim.loop
+                local handle, pid = uv.spawn("contour", { args = args, detached = true },
+                    function() end)
+            end,
             offline_mode = {
                 enabled = true,
                 no_github = false,
