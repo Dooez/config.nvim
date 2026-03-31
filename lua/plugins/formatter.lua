@@ -2,7 +2,7 @@ return {
     {
         "stevearc/conform.nvim",
         dependencies = {
-            "williamboman/mason.nvim",
+            vim.g.is_remote and nil or "williamboman/mason.nvim",
         },
         opts = {
             formatters_by_ft = {
@@ -21,6 +21,7 @@ return {
     },
     {
         "zapling/mason-conform.nvim",
+        enabled = not vim.g.is_remote,
         dependencies = {
             "williamboman/mason.nvim",
             "stevearc/conform.nvim",

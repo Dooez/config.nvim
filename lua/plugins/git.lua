@@ -60,8 +60,11 @@ return {
         },
         opts = {
             commit_detail_view = function(commit, row, path)
-                vim.cmd('DiffviewOpen ' .. commit .. ' --selected-file=' .. path);
+                vim.cmd('DiffviewOpen ' .. commit .. '~1..' .. commit .. ' --selected-file=' .. path);
             end,
+            mappings = {
+                stack_push = "P",
+            }
         }
 
     },

@@ -9,8 +9,8 @@ return {
                     'nvim-neotest/nvim-nio'
                 }
             },
-            'williamboman/mason.nvim', -- Installs the debug adapters for you
-            'jay-babu/mason-nvim-dap.nvim',
+            vim.g.is_remote and nil or 'williamboman/mason.nvim', -- Installs the debug adapters for you
+            vim.g.is_remote and nil or 'jay-babu/mason-nvim-dap.nvim',
             'rcarriga/nvim-notify',
             "theHamsta/nvim-dap-virtual-text",
             "kdheepak/nvim-dap-julia",

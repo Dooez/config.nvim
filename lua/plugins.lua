@@ -9,12 +9,13 @@ return {
     },
     {
         "williamboman/mason.nvim",
+        enabled = not vim.g.is_remote,
         opts = { pip = { upgrade_pip = true, }, }
 
     },
     {
         'nvim-treesitter/nvim-treesitter',
-        depenencies = "OXY2DEV/markview.nvim",
+        dependencies = "OXY2DEV/markview.nvim",
         config = function()
             require('nvim-treesitter.configs').setup({
                 ensure_installed = {
@@ -268,18 +269,44 @@ return {
     },
     {
         "Dooez/remote-nvim.nvim",
+        event = "VeryLazy",
+        enabled = not vim.g.is_remote,
+        dev = true,
+        dir = "~/repos/remote-nvim.nvim",
         version = "*",                       -- Pin to GitHub releases
         dependencies = {
             "nvim-lua/plenary.nvim",         -- For standard functions
             "MunifTanjim/nui.nvim",          -- To build the plugin UI
             "nvim-telescope/telescope.nvim", -- For picking b/w different remote methods
         },
+
         opts = {
             client_callback = function(port, _)
                 local args = { "nvim", "--remote-ui", "--server", "localhost:" .. port, }
                 local uv = vim.uv or vim.loop
                 local handle, pid = uv.spawn("contour", { args = args, detached = true },
                     function() end)
+            end,
+            connection_id_callback = function()
+                local adjs = {
+                    "lilac", "cranberry", "magenta",
+                    "neon", "wasabi", "electric",
+                    "turquoise", "cobalt", "ruby", "amber",
+                    "chrome", "velvet", "ghost",
+                }
+
+                local nouns = {
+                    "lightning", "vampire", "cobra", "wizard", "phantom",
+                    "jaguar", "shaman", "cyclone", "nebula", "glitch"
+                }
+
+                math.randomseed(os.clock() * 1000000)
+
+                local adj = adjs[math.random(#adjs)]
+                local noun = nouns[math.random(#nouns)]
+
+                local id_string = adj .. "-" .. noun
+                return id_string
             end,
             offline_mode = {
                 enabled = true,
@@ -304,7 +331,7 @@ return {
                     data = {
                         dirs = {
                             'lazy',
-                            'mason',
+                            -- 'mason',
                             'utils',
                         },
                         compression = {

@@ -7,6 +7,8 @@ local check_env = function(var)
   return vim.env[var] ~= nil and vim.env[var] ~= 0
 end
 
+vim.g.lazydev_enabled = true
+
 vim.g.have_nerd_font = true
 vim.g.have_yazi = vim.fn.executable('yazi') == 1
 vim.g.have_cmake = vim.fn.executable('cmake') == 1
@@ -15,6 +17,7 @@ vim.g.have_node = vim.fn.executable('node') == 1
 vim.g.have_cortex_dbg = vim.g.have_node and check_env("NVIM_CORTEX_DBG")
 vim.g.have_rustup = vim.fn.executable('rustup') == 1
 vim.g.perf_animate = not check_env("NVIM_ANIMATE")
+vim.g.is_remote = check_env("NVIM_REMOTE")
 
 vim.o.number = true
 vim.o.relativenumber = true
@@ -25,9 +28,20 @@ vim.o.tabstop = 4
 vim.o.mouse = 'a'
 
 vim.o.conceallevel = 2
-vim.schedule(function()
-  vim.o.clipboard = 'unnamedplus'
-end)
+vim.opt.clipboard:append('unnamedplus')
+if vim.g.is_remote then
+  vim.api.nvim_create_autocmd('TextYankPost', {
+    callback = function()
+      vim.highlight.on_yank()
+      local copy_to_unnamedplus = require('vim.ui.clipboard.osc52').copy('+')
+      copy_to_unnamedplus(vim.v.event.regcontents)
+      local copy_to_unnamed = require('vim.ui.clipboard.osc52').copy('*')
+      copy_to_unnamed(vim.v.event.regcontents)
+    end,
+    -- group = highlight_group,
+    pattern = '*'
+  })
+end
 
 vim.o.wrap = false
 vim.o.foldlevel = 99

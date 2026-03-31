@@ -4,7 +4,7 @@ return {
         event = "VeryLazy",
         enabled = false,
         dependencies = {
-            'williamboman/mason.nvim',
+            vim.g.is_remote and nil or'williamboman/mason.nvim',
         },
         config = function()
             local lint = require("lint")

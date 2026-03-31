@@ -3,8 +3,8 @@ return {
         -- LSP Configuration & Plugins
         'neovim/nvim-lspconfig',
         dependencies = {
-            'williamboman/mason.nvim',
-            'williamboman/mason-lspconfig.nvim',
+            vim.g.is_remote and nil or 'williamboman/mason.nvim',
+            vim.g.is_remote and nil or 'williamboman/mason-lspconfig.nvim',
             'p00f/clangd_extensions.nvim',
             'folke/neodev.nvim',
             { -- Useful status updates for LSP
