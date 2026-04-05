@@ -12,7 +12,7 @@ return {
 		-- this file can contain specific instructions for your project
 		instructions_file = "avante.md",
 		-- for example
-		provider = "openai",
+		provider = "kilo",
 		providers = {
 			openai = {
 				endpoint = "https://litellm-proxy.ai.yadro.com/",
@@ -20,10 +20,28 @@ return {
 				timeout = 30000, -- Timeout in milliseconds
 				extra_request_body = {
 					temperature = 0.75,
-					max_tokens = 20480,
+					-- max_tokens = 20480,
 				},
 			},
 		},
+		acp_providers = {
+			["kilo"] = {
+				command = "kilo",
+				args = { "acp" },
+				env = {
+					NODE_NO_WARNINGS       = "1",
+					YADRO_JIRA_TOKEN       = os.getenv("YADRO_JIRA_TOKEN"),
+					YADRO_CONFLUENCE_TOKEN = os.getenv("YADRO_CONFLUENCE_TOKEN"),
+					YADRO_OPENAI_KEY       = os.getenv("YADRO_OPENAI_KEY"),
+				}
+			}
+		},
+		behaviour = {
+			enable_fastapply = false,
+			auto_apply_diff_after_generation = false,
+			auto_approve_tool_permissions = true,
+			confirmation_ui_style = "pupup",
+		}
 	},
 	dependencies = {
 		"nvim-lua/plenary.nvim",
@@ -63,4 +81,94 @@ return {
 			ft = { "Avante" },
 		},
 	},
+	{
+		"folke/sidekick.nvim",
+		opts = {
+			nes = { enabled = false },
+			cli = {
+				tools = {
+					kilo = {
+						cmd = { "bash", "-c", "kilo 2>/dev/null" },
+						is_proc = "\\<kilo\\>",
+						keys = {
+							prompt = { "<a-p>", "prompt" }
+						},
+					}
+				}
+			}
+		},
+		keys = {
+			{
+				"<c-.>",
+				function() require("sidekick.cli").focus() end,
+				desc = "Sidekick Focus",
+				mode = { "n", "t", "i", "x" },
+			},
+			{
+				"<leader>aa",
+				function() require("sidekick.cli").toggle() end,
+				desc = "Sidekick Toggle CLI",
+			},
+			{
+				"<leader>as",
+				function() require("sidekick.cli").select() end,
+				-- Or to select only installed tools:
+				-- require("sidekick.cli").select({ filter = { installed = true } })
+				desc = "Select CLI",
+			},
+			{
+				"<leader>at",
+				function() require("sidekick.cli").send({ msg = "{this}" }) end,
+				mode = { "x", "n" },
+				desc = "Send This",
+			},
+			{
+				"<leader>af",
+				function() require("sidekick.cli").send({ msg = "{file}" }) end,
+				desc = "Send File",
+			},
+			{
+				"<leader>av",
+				function() require("sidekick.cli").send({ msg = "{selection}" }) end,
+				mode = { "x" },
+				desc = "Send Visual Selection",
+			},
+			{
+				"<leader>ap",
+				function() require("sidekick.cli").prompt() end,
+				mode = { "n", "x" },
+				desc = "Sidekick Select Prompt",
+			},
+			{
+				"<leader>ak",
+				function() require("sidekick.cli").toggle({ name = "kilo", focus = true }) end,
+				desc = "Sidekick Toggle Kilo",
+			},
+		},
+		dependencies = {
+			{
+				"folke/snacks.nvim",
+				optional = true,
+				opts = {
+					picker = {
+						actions = {
+							sidekick_send = function(...)
+								return require("sidekick.cli.picker.snacks").send(...)
+							end,
+						},
+						win = {
+							input = {
+								keys = {
+									["<a-a>"] = {
+										"sidekick_send",
+										mode = { "n", "i" },
+									},
+								},
+							},
+						},
+					},
+				},
+			}
+		}
+	}
 }
