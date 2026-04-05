@@ -18,6 +18,7 @@ vim.g.have_cortex_dbg = vim.g.have_node and check_env("NVIM_CORTEX_DBG")
 vim.g.have_rustup = vim.fn.executable('rustup') == 1
 vim.g.perf_animate = not check_env("NVIM_ANIMATE")
 vim.g.is_remote = check_env("NVIM_REMOTE")
+vim.o.exrc = true -- read .local.nvim
 
 vim.o.number = true
 vim.o.relativenumber = true
