@@ -38,8 +38,13 @@ return {
             },
             {
                 '<leader>gh',
-                '<cmd>DiffviewFileHistory --reflog<cr>',
+                '<cmd>DiffviewFileHistory<cr>',
                 desc = 'Open [G]it [H]istroy panel.',
+            },
+            {
+                '<leader>gH',
+                '<cmd>DiffviewFileHistory --reflog<cr>',
+                desc = 'Open full [G]it [H]istroy panel.',
             },
             {
                 '<leader>gq',

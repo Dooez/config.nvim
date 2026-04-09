@@ -9,6 +9,7 @@ return {
                 cpp = { "clang_format" },
                 python = { "isort", "black" },
                 cmake = { "cmakelang" },
+                json = { "clang_format" }
             },
         },
         keys = {

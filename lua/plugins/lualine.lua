@@ -19,6 +19,15 @@ return {
         --         return gitdir and #gitdir > 0 and #gitdir < #filepath
         --     end,
         -- }
+
+        require('lualine').setup({
+            options = {
+                disabled_filetypes = {
+                    statusline = { 'AgenticChat', 'AgenticInput', 'AgenticCode', 'AgenticFiles', 'AgenticDiagnostics' },
+                    winbar = { 'AgenticChat', 'AgenticInput', 'AgenticCode', 'AgenticFiles', 'AgenticDiagnostics' },
+                }
+            }
+        })
         local statusline = require('arrow.statusline')
         local arrow_fmt = function()
             local empty = '·'
@@ -65,7 +74,11 @@ return {
             options = {
                 component_separators = '',
                 section_separators = '',
-                theme = 'catppuccin',
+                theme = 'catppuccin-nvim',
+                disabled_filetypes = {
+                    statusline = { 'AgenticChat', 'AgenticInput', 'AgenticCode', 'AgenticFiles', 'AgenticDiagnostics' },
+                    winbar = { 'AgenticChat', 'AgenticInput', 'AgenticCode', 'AgenticFiles', 'AgenticDiagnostics' },
+                },
             },
             sections = {
                 lualine_a = {
