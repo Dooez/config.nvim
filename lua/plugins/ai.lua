@@ -28,7 +28,7 @@ return {
 			{
 				"<leader>at",
 				function() require("agentic").toggle() end,
-				mode = { "n", "v", "i" },
+				mode = { "n", "v", },
 				desc = "Toggle Agentic Chat"
 			},
 			{
@@ -46,7 +46,7 @@ return {
 			{
 				"<leader>an",
 				function() require("agentic").new_session() end,
-				mode = { "n", "v", "i" },
+				mode = { "n", "v", },
 				desc = "New Agentic Session"
 			},
 			{
@@ -56,7 +56,7 @@ return {
 				end,
 				desc = "Agentic Restore session",
 				silent = true,
-				mode = { "n", "v", "i" },
+				mode = { "n", "v" },
 			},
 			{
 				"<leader>ad", -- ai Diagnostics
